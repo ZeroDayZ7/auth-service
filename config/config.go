@@ -63,7 +63,6 @@ func LoadConfigGlobal() error {
 	viper.AutomaticEnv()
 	viper.SetDefault("APP_NAME", "http-server")
 	viper.SetDefault("PORT", "8080")
-	viper.SetDefault("BODY_LIMIT_MB", 2)
 	viper.SetDefault("APP_VERSION", "0.1.0")
 	viper.SetDefault("ENV", "development")
 	viper.SetDefault("SERVER_HEADER", "ZeroDayZ7")
@@ -78,7 +77,6 @@ func LoadConfigGlobal() error {
 	viper.SetDefault("DB_CONN_MAX_LIFETIME_MIN", 30)
 	viper.SetDefault("RATE_LIMIT_MAX", 100)
 	viper.SetDefault("RATE_LIMIT_WINDOW_SEC", 60)
-	viper.SetDefault("CORS_ALLOW_ORIGINS", "*")
 	viper.SetDefault("SHUTDOWN_TIMEOUT_SEC", 5)
 
 	viper.SetDefault("JWT_ACCESS_SECRET", "super_access_secret_123")
@@ -97,7 +95,6 @@ func LoadConfigGlobal() error {
 		Server: ServerConfig{
 			AppName:       viper.GetString("APP_NAME"),
 			Port:          viper.GetString("PORT"),
-			BodyLimitMB:   viper.GetInt("BODY_LIMIT_MB"),
 			AppVersion:    viper.GetString("APP_VERSION"),
 			Env:           viper.GetString("ENV"),
 			ServerHeader:  viper.GetString("SERVER_HEADER"),
@@ -118,8 +115,7 @@ func LoadConfigGlobal() error {
 			Max:    viper.GetInt("RATE_LIMIT_MAX"),
 			Window: time.Duration(viper.GetInt("RATE_LIMIT_WINDOW_SEC")) * time.Second,
 		},
-		CORSAllow: viper.GetString("CORS_ALLOW_ORIGINS"),
-		Shutdown:  time.Duration(viper.GetInt("SHUTDOWN_TIMEOUT_SEC")) * time.Second,
+		Shutdown: time.Duration(viper.GetInt("SHUTDOWN_TIMEOUT_SEC")) * time.Second,
 		JWT: JWTConfig{
 			AccessSecret:  viper.GetString("JWT_ACCESS_SECRET"),
 			RefreshSecret: viper.GetString("JWT_REFRESH_SECRET"),
@@ -128,6 +124,6 @@ func LoadConfigGlobal() error {
 		},
 	}
 
-	log.Info("Configuration loaded")
+	log.Info("Auth-Service - Configuration loaded")
 	return nil
 }

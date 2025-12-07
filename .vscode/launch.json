@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.1.0",
   "configurations": [
     {
       "name": "Go Server",
@@ -14,7 +14,6 @@
       },
       "buildFlags": "-tags=dev",
       "cwd": "${workspaceFolder}",
-      // "preLaunchTask": "go: build",
       "showLog": true,
       "output": "${workspaceFolder}/bin/__debug_bin.exe"
     }
