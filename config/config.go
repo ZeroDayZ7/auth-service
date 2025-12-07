@@ -106,7 +106,7 @@ func LoadConfigGlobal() error {
 			WriteTimeout:  time.Duration(viper.GetInt("WRITE_TIMEOUT_SEC")) * time.Second,
 		},
 		Database: DBConfig{
-			DSN:             viper.GetString("MYSQL_DSN"),
+			DSN:             viper.GetString("DATABASE_DSN"),
 			MaxOpenConns:    viper.GetInt("DB_MAX_OPEN_CONNS"),
 			MaxIdleConns:    viper.GetInt("DB_MAX_IDLE_CONNS"),
 			ConnMaxLifetime: time.Duration(viper.GetInt("DB_CONN_MAX_LIFETIME_MIN")) * time.Minute,

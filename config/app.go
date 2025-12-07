@@ -6,7 +6,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
-	_ "github.com/gofiber/storage/mysql/v2"
 	"github.com/zerodayz7/http-server/internal/middleware"
 )
 

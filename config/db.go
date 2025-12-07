@@ -2,20 +2,20 @@ package config
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/zerodayz7/http-server/internal/features/auth/model"
-	// usersModel "github.com/zerodayz7/http-server/internal/features/users/model"
 	"github.com/zerodayz7/http-server/internal/shared/logger"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-// MustInitDB inicjalizuje bazę i panicuje przy błędzie, zwraca *gorm.DB i funkcję do defer
+// MustInitDB inicjalizuje bazę PostgreSQL i panicuje przy błędzie, zwraca *gorm.DB i funkcję do defer
 func MustInitDB() (*gorm.DB, func()) {
 	log := logger.GetLogger()
 	cfg := AppConfig.Database
 
-	db, err := gorm.Open(mysql.Open(cfg.DSN), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(cfg.DSN), &gorm.Config{})
 	if err != nil {
 		panic(fmt.Errorf("failed to connect to database: %w", err))
 	}
@@ -27,21 +27,21 @@ func MustInitDB() (*gorm.DB, func()) {
 
 	sqlDB.SetMaxOpenConns(cfg.MaxOpenConns)
 	sqlDB.SetMaxIdleConns(cfg.MaxIdleConns)
-	sqlDB.SetConnMaxLifetime(cfg.ConnMaxLifetime)
+	sqlDB.SetConnMaxLifetime(time.Duration(cfg.ConnMaxLifetime) * time.Minute)
 
 	if err := sqlDB.Ping(); err != nil {
 		panic(fmt.Errorf("database ping failed: %w", err))
 	}
 
+	// Migracje modeli
 	if err := db.AutoMigrate(
-		// &usersModel.User{},
 		&model.RefreshToken{},
-		// kolejne modele
+		// dodaj kolejne modele
 	); err != nil {
 		log.ErrorObj("Failed to migrate database", err)
 		panic(err)
 	}
 
-	log.Info("Successfully connected to MySQL")
+	log.Info("Successfully connected to PostgreSQL")
 	return db, func() { sqlDB.Close() }
 }
