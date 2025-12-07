@@ -10,7 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// MustInitDB inicjalizuje bazę PostgreSQL i panicuje przy błędzie, zwraca *gorm.DB i funkcję do defer
 func MustInitDB() (*gorm.DB, func()) {
 	log := logger.GetLogger()
 	cfg := AppConfig.Database
@@ -35,8 +34,8 @@ func MustInitDB() (*gorm.DB, func()) {
 
 	// Migracje modeli
 	if err := db.AutoMigrate(
+		&model.User{},
 		&model.RefreshToken{},
-		// dodaj kolejne modele
 	); err != nil {
 		log.ErrorObj("Failed to migrate database", err)
 		panic(err)
